@@ -22,7 +22,6 @@ import com.ultra.getimages.Units.ListElement;
 import com.ultra.getimages.Utils.BackgroundTask;
 import com.ultra.getimages.Utils.O;
 import rx.Subscriber;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -95,15 +94,6 @@ public class ImgListActivity extends AppCompatActivity
 			data.putExtra(O.extra.PATH,file.getAbsolutePath() );
 			data.putExtra(O.extra.POSITION,index);
 			context.sendBroadcast(data);
-			}
-		}
-	private class FileListCallable implements Callable<Boolean>
-		{
-		@Override
-		public Boolean call() throws Exception
-			{
-			filelist=getFileList();
-			return true;
 			}
 		}
 	private class FileListSubScriber extends Subscriber<Boolean>
@@ -192,7 +182,15 @@ public class ImgListActivity extends AppCompatActivity
 		setContentView(R.layout.img_list_layout);
 
 		recyclerList= (RecyclerView)findViewById(R.id.list);
-		BackgroundTask<Boolean> backgroundTask= new BackgroundTask<>(this,new FileListCallable() );
+		BackgroundTask<Boolean> backgroundTask= new BackgroundTask<>(this,new Callable<Boolean>()
+			{
+			@Override
+			public Boolean call() throws Exception
+				{
+				filelist=getFileList();
+				return true;
+				}
+			});
 		backgroundTask.setSubscriber(new FileListSubScriber(backgroundTask.getDialog() ) );
 		backgroundTask.start();
 

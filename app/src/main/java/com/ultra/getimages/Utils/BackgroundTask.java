@@ -26,16 +26,6 @@ public class BackgroundTask<T>
 	private Callable<T> task;
 	private Subscription subscription;
 
-	private class TaskInterruptor implements DialogInterface.OnDismissListener
-		{
-		@Override
-		public void onDismiss(DialogInterface dialog)
-			{
-			subscription.unsubscribe();
-			Log.d(O.TAG,"onDismiss: allSusubscriptions.isUnsubscribed(): "+ subscription.isUnsubscribed() );
-			}
-		}
-
 	public BackgroundTask(Context context,Callable<T> _task)
 		{
 		task=_task;
@@ -43,7 +33,15 @@ public class BackgroundTask<T>
 		dialog.setMessage("Работаю...");
 		dialog.setCancelable(false);
 		dialog.setIndeterminate(true);
-		dialog.setOnDismissListener(new TaskInterruptor() );
+		dialog.setOnDismissListener(new DialogInterface.OnDismissListener()
+			{
+			@Override
+			public void onDismiss(DialogInterface dialog)
+				{
+				subscription.unsubscribe();
+				Log.d(O.TAG,"onDismiss: allSusubscriptions.isUnsubscribed(): "+ subscription.isUnsubscribed() );
+				}
+			});
 		}
 	public ProgressDialog getDialog()
 		{

@@ -15,16 +15,6 @@ public class MainActivity extends AppCompatActivity
 	private String token;
 	private Button btn;
 
-	private class BtnListener implements View.OnClickListener
-		{
-		@Override
-		public void onClick(View v)
-			{
-			Intent jumper= new Intent(MainActivity.this,ImgListActivity.class);
-			startActivity(jumper);
-			}
-		}
-
 	private String getToken()
 		{
 		String result= App.prefs.getString(O.prefs.TOKEN,null);
@@ -41,7 +31,15 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.main_layout);
 
 		btn= (Button)findViewById(R.id.btnToImgs);
-		btn.setOnClickListener(new BtnListener() );
+		btn.setOnClickListener(new View.OnClickListener()
+			{
+			@Override
+			public void onClick(View v)
+				{
+				Intent jumper= new Intent(MainActivity.this,ImgListActivity.class);
+				startActivity(jumper);
+				}
+			});
 
 		token= getToken();
 		if(token!=null)
