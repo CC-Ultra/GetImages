@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -19,46 +20,42 @@ import java.util.concurrent.Callable;
  * @author CC-Ultra
  */
 
-public class BackgroundTask<T>
-	{
+public class BackgroundTask<T> {
 	private ProgressDialog dialog;
 	private Subscriber<T> subscriber;
 	private Callable<T> task;
 	private Subscription subscription;
 
-	public BackgroundTask(Context context,Callable<T> _task)
-		{
-		task=_task;
-		dialog= new ProgressDialog(context);
+	public BackgroundTask(Context context, Callable<T> _task) {
+		task = _task;
+		dialog = new ProgressDialog(context);
 		dialog.setMessage("Работаю...");
 		dialog.setCancelable(false);
 		dialog.setIndeterminate(true);
-		dialog.setOnDismissListener(new DialogInterface.OnDismissListener()
-			{
+		dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
-			public void onDismiss(DialogInterface dialog)
-				{
+			public void onDismiss(DialogInterface dialog) {
 				subscription.unsubscribe();
-				Log.d(O.TAG,"onDismiss: allSusubscriptions.isUnsubscribed(): "+ subscription.isUnsubscribed() );
-				}
-			});
-		}
-	public ProgressDialog getDialog()
-		{
-		return dialog;
-		}
-	public void setSubscriber(Subscriber<T> _subscriber)
-		{
-		subscriber=_subscriber;
-		}
-
-	public void start()
-		{
-		dialog.show();
-		Observable<T> obs= Observable.fromCallable(task);
-		subscription= obs.
-				subscribeOn(Schedulers.io() ).
-				observeOn(AndroidSchedulers.mainThread() ).
-				subscribe(subscriber);
-		}
+				Log.d(O.TAG, "onDismiss: allSusubscriptions.isUnsubscribed(): " + subscription.isUnsubscribed());
+			}
+		});
 	}
+
+	public ProgressDialog getDialog() {
+		return dialog;
+	}
+
+	public void setSubscriber(Subscriber<T> _subscriber) {
+		subscriber = _subscriber;
+	}
+
+	public void start() {
+		dialog.show();
+
+		Observable<T> obs = Observable.fromCallable(task);
+		subscription = obs.
+				subscribeOn(Schedulers.io()).
+				observeOn(AndroidSchedulers.mainThread()).
+				subscribe(subscriber);
+	}
+}
