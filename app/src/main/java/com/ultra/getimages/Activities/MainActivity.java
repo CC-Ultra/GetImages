@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity
 		Log.d(O.TAG,"getToken: token="+ result);
 		return result;
 		}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 		{

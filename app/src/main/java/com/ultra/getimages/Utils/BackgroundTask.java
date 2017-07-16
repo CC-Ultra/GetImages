@@ -55,7 +55,6 @@ public class BackgroundTask<T>
 	public void start()
 		{
 		dialog.show();
-
 		Observable<T> obs= Observable.fromCallable(task);
 		subscription= obs.
 				subscribeOn(Schedulers.io() ).

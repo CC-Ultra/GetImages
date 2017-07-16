@@ -68,4 +68,5 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder>
 		{
 		return elements.size();
 		}
+
 	}

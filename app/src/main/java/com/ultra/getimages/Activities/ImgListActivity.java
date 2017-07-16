@@ -104,7 +104,6 @@ public class ImgListActivity extends AppCompatActivity
 			{
 			dialog=_dialog;
 			}
-
 		@Override
 		public void onCompleted()
 			{
